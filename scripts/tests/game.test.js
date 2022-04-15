@@ -2,8 +2,7 @@
  * @jest-environment jsdom
  */
 
- const { test, expect } = require("@jest/globals");
-const { game } = require("../game");
+const { game, newGame, showScore } = require("../game");
 
 beforeAll(() => {
     let fs = require("fs");
@@ -28,5 +27,27 @@ describe("game object contains correct keys", () => {
     });
     test("button ids in choices array", () => {
         expect(game.choices).toEqual(["button1", "button2", "button3", "button4"]);
+    });
+});
+
+describe("newGame works correctly", () => {
+    beforeAll(() => {
+        game.score = 5;
+        game.currentGame = ["test"];
+        game.playerMoves = ["test"];
+        document.getElementById("score").innerText = 42;
+        newGame();
+    });
+    test("reset game score to zero", () => {
+        expect(game.score).toEqual(0);
+    });
+    test("reset currentGame array", () => {
+        expect(game.currentGame).toEqual([]);
+    });
+    test("reset playerMoves array", () => {
+        expect(game.playerMoves).toEqual([]);
+    });
+    test("reset score count in DOM", () => {
+        expect(document.getElementById("score").innerText).toEqual(0);
     });
 });
